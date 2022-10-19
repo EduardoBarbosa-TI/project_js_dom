@@ -10,7 +10,7 @@ function setCardType(type) {
   const colors = {
     visa: ["#2D57F2", "#436D99"],
     mastercard: ["#C69347", "#DF6F29"],
-    banrisul: ["#00092D", "#56A9FF"],
+    americanExpress: ["#032F1C", "#267B24"],
     default: ["black", "gray"],
   }
 
@@ -18,6 +18,8 @@ function setCardType(type) {
   ccBgColor02.setAttribute("fill", colors[type] [1]) 
   ccLogo.setAttribute("src", `cc-${type}.svg`)
 }
+
+
 globalThis.setCardType = setCardType
 
 
@@ -47,5 +49,42 @@ const expirationDatePattern = {
 }
 
 const expirationDateMasked = IMask(expirationDate, expirationDatePattern)
+
+const cardNumber = document.querySelector("#card-number")
+const cardNumberPattern = {
+  mask: [
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /^4\d{0,15}/,
+      cardtype: "visa",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /(^5[1-5]\d{0,2}|^22[2-9]\d|^2[3-7]\d{0,2})\d{0,12}/,
+      cardtype: "mastercard",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /^3[47][0-9]{13}/,
+      cardtype: "americanExpress",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      cardtype: "default",
+    },
+  ],
+  dispatch: function (appended, dynamicMasked) {
+    const number = (dynamicMasked.value + appended).replace(/\D/g, "")
+
+    const foundMask = dynamicMasked.compiledMasks.find(function (item) {
+      return number.match(item.regex)
+    })
+
+    console.log(foundMask)
+
+    return foundMask
+  },
+}
+const cardNumberMasked = IMask(cardNumber, cardNumberPattern)
 
 
