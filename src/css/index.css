@@ -9,13 +9,12 @@
 
   body {
     background: #202024;
+    background: url(../public/fundo-site-mobile-2.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
-
-  #app {
-    background: none;
-    border: none;
-  }
-
+  
   .cc-bg svg {
     width: 100%;
     height: auto;
